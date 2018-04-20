@@ -11,7 +11,7 @@ from .models import LogHasExercise
 
 
 admin.site.register(Food)
-admin.site.register(Excercises)
+admin.site.register(Exercises)
 admin.site.register(User)
 admin.site.register(LogHasFood)
 admin.site.register(DailyLog)
