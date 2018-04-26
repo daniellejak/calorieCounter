@@ -1,7 +1,17 @@
 {% extends 'caloriecounter/base_generic.html' %}
-
 {% block content %}
+
+{% if user.is_authenticated %}
+<p>Welcome, {{ user.get_username }}. 
+l 
+<a href="{% url 'logout' %}">Log Out</a>
+{% else %}
+l
+<a href="{% url 'login' %}">Log In</a>
+{% endif %}
+
 <h2>Daily Log</h2>
+
 
 {% if dailylog %} <!-- check if list is full or empty -->
 <ul>
@@ -39,6 +49,7 @@
 No log entry
 {% endif %}
 
+<a href="food/add/{{dailylog.id}}">Log food to daily log</a>
 <a href="add">Add exercise to database</a>
 
 <div class="stats-info agileits w3layouts">

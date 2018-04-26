@@ -1,4 +1,4 @@
-from .models import Exercise, User, LogHasFood, DailyLog, LogHasExercise
+from .models import Exercises, LogHasFood, DailyLog, LogHasExercise, Food
 
 from django import forms
 
@@ -8,31 +8,32 @@ class ExerciseForm(forms.ModelForm):
 
     class Meta:
 
-        model = Exercise
+        model = Exercises
 
         fields = '__all__'
 
-class UserForm(forms.ModelForm):
+class FoodForm(forms.ModelForm):
 
     class Meta:
-
-        model = User
-
-        fields = '__all__'
-
-class LogHasFood(forms.ModelForm):
-
-    class Meta:
-
         model = LogHasFood
-
-        fields = '__all__'
+        fields = ('foodName'),
+        labels = {
+            'name': ('Enter food'),
+            }
 
 class DailyLog(forms.ModelForm):
 
     class Meta:
 
         model = DailyLog
+
+        fields = '__all__'
+        
+class Food(forms.ModelForm):
+
+    class Meta:
+
+        model = Food
 
         fields = '__all__'
 

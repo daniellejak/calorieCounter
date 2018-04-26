@@ -8,7 +8,7 @@ from .models import Food
 from django.http import HttpResponse
 from django.http import HttpResponseRedirect
 
-#from .forms import CadetForm
+from .forms import FoodForm
 
 # Create your views here.
 def exercises(request):
@@ -45,6 +45,20 @@ def detail(request, exercise_id):
     except Exercises.DoesNotExist:
         raise Http404("Exercises does not exist")
     return render(request, 'caloriecounter/detail.html', context)
+    
+def addfood(request, dailylog_id):
+    if request.method == 'POST':
+        form = FoodForm(request.POST)
+        if form.is_valid():
+            #Add the cadet to the database
+            newfood = form.save(commit=False)
+            newfood.dailylog = dailylog_id
+            newfood.save()
+            #Go back to cadet list
+            return HttpResponseRedirect('/caloriecounter')
+    else:
+        form = FoodForm()
+    return render(request, 'caloriecounter/food/add.html', {'form': form})
 '''
 def update(request, cadet_id):
     new_xnumber = request.POST['xnumber']

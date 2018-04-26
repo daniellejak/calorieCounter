@@ -6,5 +6,6 @@ app_name='caloriecounter'
 urlpatterns = [
     path('',views.index,name='index'),
     path('<int:exercise_id>/',views.detail,name='detail'),
-    path('exercises/',views.exercises, name='exercises'),
+    path('exercises',views.exercises, name='exercises'),
+    path('food/add/<int:dailylog_id>',views.addfood,name='addfood'),
 ]
