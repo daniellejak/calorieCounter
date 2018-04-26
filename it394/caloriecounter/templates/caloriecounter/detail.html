@@ -1,0 +1,15 @@
+<h2>Exercise</h2>
+
+{% if exercises %} <!-- check if list is full or empty -->
+<ul>
+
+  {% for exercise in exercises %}
+      <li><a href="./{{exercise.id}}">{{exercise.exerciseName}}</a> {{exercise.calories}}</li>
+  {% endfor %}
+
+</ul>
+{% else %}
+<p>No exercises in database</p>
+{% endif %}
+
+<a href="add">Add exercise to database</a>

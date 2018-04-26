@@ -1,6 +1,10 @@
 from django.shortcuts import render
 from django.template import loader
 from .models import Exercises
+from .models import DailyLog
+from .models import LogHasFood
+from .models import LogHasExercise
+from .models import Food
 from django.http import HttpResponse
 from django.http import HttpResponseRedirect
 
@@ -14,8 +18,23 @@ def exercises(request):
     return HttpResponse(template.render(context, request)) #Render the template with the context
     
 def index(request):
-    exercises = Exercises.objects.all() #Grab all cadets from database
-    context = {'exercises': exercises} #fill a context with the cadet list
+    dailylog = DailyLog.objects.get(pk=1)
+    foodlog = LogHasFood.objects.filter(dailyLog = dailylog.id)
+    exerciselog = LogHasExercise.objects.filter(dailyLog = dailylog.id)
+    totalcalories = 0
+    totalcarbs = 0
+    totalfat = 0
+    totalprotein = 0
+    for food in foodlog:
+        totalcalories = food.foodName.calories + totalcalories
+    for carbs in foodlog:
+        totalcarbs = food.foodName.carbs + totalcarbs
+    for fat in foodlog:
+        totalfat = food.foodName.fat + totalfat 
+    for protein in foodlog:
+        totalprotein = food.foodName.protein + totalprotein
+        
+    context = {'dailylog': dailylog, 'foodlog' : foodlog, 'exerciselog' : exerciselog, 'totalcalories' : totalcalories, 'totalcarbs' : totalcarbs, 'totalfat' : totalfat, 'totalprotein' : totalprotein} #fill a context with the cadet list
     template = loader.get_template('caloriecounter/index.html') #Get the template we created
     return HttpResponse(template.render(context, request)) #Render the template with the context
 

@@ -1,15 +1,77 @@
-<h2>Exercise List</h2>
+{% extends 'caloriecounter/base_generic.html' %}
 
-{% if exercises %} <!-- check if list is full or empty -->
+{% block content %}
+<h2>Daily Log</h2>
+
+{% if dailylog %} <!-- check if list is full or empty -->
 <ul>
 
-  {% for exercise in exercises %}
-      <li><a href="./{{exercise.id}}">{{exercise.exerciseName}}</a> {{exercise.calories}}</li>
-  {% endfor %}
+  
+  Date: {{ dailylog.date }}
+  
 
 </ul>
+
+<ul>
+  {% if foodlog %}
+      <b>Food Log</b>
+      {% for food in foodlog %}
+          <li>Food: {{ food.foodName.foodName }}</li>
+          <li>Calories: {{ food.foodName.calories }}</li>
+          <li>Carbs: {{ food.foodName.carbs }}</li>
+          <li>Fat: {{ food.foodName.fat }}</li>
+          <li>Protein: {{ food.foodName.protein }}</li>          
+      {% endfor %}
+  {% endif %}
+ </ul>
+ 
+ <ul> 
+    {% if exerciselog %}
+    <b>Exercise Log</b>
+      {% for exercise in exerciselog %}
+          <li>Exercise: {{ exercise.exerciseName.exerciseName }}</li>
+          <li>Calories/Min: {{ exercise.exerciseName.caloriesPerMin }}</li>
+      {% endfor %}
+  {% endif %}
+</ul>
+
 {% else %}
-<p>No exercises in database</p>
+No log entry
 {% endif %}
 
 <a href="add">Add exercise to database</a>
+
+<div class="stats-info agileits w3layouts">
+					<div class="col-md-3 col-sm-3 col-xs-6 agileits w3layouts stats-grid stats-grid-1">
+						<div class=" agileits-w3layouts counter">{{ totalcalories }}</div>
+						<div class="stat-info-w3ls">
+							<h4 class="agileits w3layouts">Calories</h4>
+						</div>
+						<div class="clearfix"></div>
+					</div>
+					<div class="col-md-3 col-sm-3 col-xs-6 agileits w3layouts stats-grid stats-grid-2">
+
+						<div class=" agileits-w3layouts counter">{{ totalcarbs }}</div>
+						<div class="stat-info-w3ls">
+							<h4 class="agileits w3layouts ">Carbs</h4>
+						</div>
+						<div class="clearfix"></div>
+					</div>
+					<div class="col-md-3 col-sm-3 col-xs-6 stats-grid agileits w3layouts stats-grid-3">
+
+						<div class=" agileits-w3layouts counter">{{ totalfat }}</div>
+						<div class="stat-info-w3ls">
+							<h4 class="agileits w3layouts ">Fat</h4>
+						</div>
+						<div class="clearfix"></div>
+					</div>
+					<div class="col-md-3 col-sm-3 col-xs-6  stats-grid agileits w3layouts stats-grid-4">
+
+						<div class=" agileits-w3layouts counter">{{ totalprotein }}</div>
+						<div class="stat-info-w3ls">
+							<h4 class="agileits w3layouts">Protein</h4>
+						</div>
+						<div class="clearfix"></div>
+					</div>
+
+{% endblock %}
