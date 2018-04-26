@@ -1,10 +1,10 @@
 <h2>Exercise List</h2>
 
-{% if exercise %} <!-- check if list is full or empty -->
+{% if exercises %} <!-- check if list is full or empty -->
 <ul>
 
   {% for exercise in exercises %}
-      <li><a href="./{{exercise.id}}">{{exercise.name}}</a> {{exercise.calories}}</li>
+      <li><a href="./{{exercise.id}}">{{exercise.exerciseName}}</a> {{exercise.calories}}</li>
   {% endfor %}
 
 </ul>

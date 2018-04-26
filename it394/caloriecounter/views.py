@@ -19,15 +19,14 @@ def index(request):
     template = loader.get_template('caloriecounter/index.html') #Get the template we created
     return HttpResponse(template.render(context, request)) #Render the template with the context
 
-'''def detail(request, cadet_id):
+def detail(request, exercise_id):
     try:
-        cadet = Cadet.objects.get(pk=cadet_id)
-        companies = Company.objects.all()
-        context = {'cadet':cadet, 'companies': companies}
-    except Cadet.DoesNotExist:
-        raise Http404("Cadet does not exist")
-    return render(request, 'users/detail.html', context)
-
+        exercise = Exercises.objects.get(pk=exercise_id)
+        context = {'exercise':exercise}
+    except Exercises.DoesNotExist:
+        raise Http404("Exercises does not exist")
+    return render(request, 'caloriecounter/detail.html', context)
+'''
 def update(request, cadet_id):
     new_xnumber = request.POST['xnumber']
     new_company_id = request.POST['company_id']
