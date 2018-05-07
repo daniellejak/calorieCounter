@@ -10,8 +10,8 @@ class ExerciseForm(forms.ModelForm):
 
         model = Exercises
 
-        fields = '__all__'
-
+        fields = ('exerciseName'),
+        labels = { 'name' : ('Enter exercise'),}
 class FoodForm(forms.ModelForm):
 
     class Meta:

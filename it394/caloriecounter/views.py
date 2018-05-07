@@ -9,6 +9,7 @@ from django.http import HttpResponse
 from django.http import HttpResponseRedirect
 
 from .forms import FoodForm
+from .forms import ExerciseForm
 
 # Create your views here.
 def exercises(request):
