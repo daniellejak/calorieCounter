@@ -8,10 +8,15 @@ class ExerciseForm(forms.ModelForm):
 
     class Meta:
 
-        model = Exercises
+        model = LogHasExercise
 
-        fields = ('exerciseName'),
-        labels = { 'name' : ('Enter exercise'),}
+        fields = ('exerciseName'),('minsExercised'),
+        labels = {
+            'exercise': ('Enter exercise'),
+            'duration': ('time exercised'),
+                }
+        
+        
 class FoodForm(forms.ModelForm):
 
     class Meta:

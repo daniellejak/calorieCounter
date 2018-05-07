@@ -12,13 +12,18 @@ class Food(models.Model):
     fat = models.IntegerField()
     carbs = models.IntegerField()
     protein = models.IntegerField()
+    
+    def __str__(self):
+        return (self.foodName)
 
 class DailyLog(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE,default=1)
     date = models.DateField()
     
     def __str__(self):
-        return (self.user.username + ": " + str(self.date)) 
+        return (self.user.username + ": " + str(self.date))
+        
+ 
          
            
 class LogHasFood(models.Model):
@@ -30,6 +35,9 @@ class LogHasExercise(models.Model):
     exerciseName = models.ForeignKey(Exercises, on_delete=models.CASCADE,default=1)
     minsExercised = models.IntegerField()
     dailyLog = models.ForeignKey(DailyLog, on_delete=models.CASCADE,default=1)
+    
+    def __str__(self):
+        return (self.exerciseName)
 
 
 

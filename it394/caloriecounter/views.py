@@ -9,6 +9,7 @@ from django.http import HttpResponse
 from django.http import HttpResponseRedirect
 from django.contrib.auth import login, authenticate
 from django.contrib.auth.forms import UserCreationForm
+from datetime import datetime
 
 from .forms import FoodForm
 from .forms import ExerciseForm
@@ -21,23 +22,40 @@ def exercises(request):
     return HttpResponse(template.render(context, request)) #Render the template with the context
     
 def index(request):
-    dailylog = DailyLog.objects.get(pk=1)
+    currentDate = datetime.now().date() 
+    try:
+        dailylog = DailyLog.objects.get(date=currentDate)
+
+    except:
+        dailylog = DailyLog(date = currentDate)
+        dailylog.save()
+    #    LogHasFood.objects.all().delete()
+    #    LogHasExercise.objects.all().delete()  
+    full_log = DailyLog.objects.all()
     foodlog = LogHasFood.objects.filter(dailyLog = dailylog.id)
-    exerciselog = LogHasExercise.objects.filter(dailyLog = dailylog.id)
-    totalcalories = 0
+    logexercises = LogHasExercise.objects.filter(dailyLog = dailylog.id)
+    #exercises = Exercises.objects.filter(dailyLog = dailylog.id)
+    foodcalories = 0
+    exercisecalories = 0
     totalcarbs = 0
     totalfat = 0
     totalprotein = 0
     for food in foodlog:
-        totalcalories = food.foodName.calories + totalcalories
+        foodcalories = food.foodName.calories + foodcalories #- exercise.exerciseName.caloriesPerMin
+    for el in logexercises:
+        exercisecalories = exercisecalories + el.minsExercised * el.exerciseName.caloriesPerMin
+        #exercise = Exercises.objects.filter(exerciseName = exercise.exerciseName)
+        #for calPerMin in calsPerMin:
+        #    exercisecalories = exercise.minsExercised*calsPerMin +exercisecalories
     for carbs in foodlog:
         totalcarbs = food.foodName.carbs + totalcarbs
     for fat in foodlog:
         totalfat = food.foodName.fat + totalfat 
     for protein in foodlog:
         totalprotein = food.foodName.protein + totalprotein
+    totalcalories = foodcalories - exercisecalories
         
-    context = {'dailylog': dailylog, 'foodlog' : foodlog, 'exerciselog' : exerciselog, 'totalcalories' : totalcalories, 'totalcarbs' : totalcarbs, 'totalfat' : totalfat, 'totalprotein' : totalprotein} #fill a context with the cadet list
+    context = {'dailylog': dailylog, 'foodlog' : foodlog, 'logexercises' : logexercises, 'totalcalories' : totalcalories, 'totalcarbs' : totalcarbs, 'totalfat' : totalfat, 'totalprotein' : totalprotein, 'full_log' : full_log} #fill a context with the cadet list
     template = loader.get_template('caloriecounter/index.html') #Get the template we created
     return HttpResponse(template.render(context, request)) #Render the template with the context
 
@@ -53,9 +71,11 @@ def addfood(request, dailylog_id):
     if request.method == 'POST':
         form = FoodForm(request.POST)
         if form.is_valid():
+            dailyLog = DailyLog.objects.get(pk=dailylog_id)
             #Add the cadet to the database
-            newfood = form.save(commit=False)
-            newfood.dailylog = dailylog_id
+            newfood = form.save()
+            #newfood = LogHasFood.objects.get(pk=newfood.id)
+            newfood.dailyLog = dailyLog
             newfood.save()
             #Go back to cadet list
             return HttpResponseRedirect('/caloriecounter')
@@ -67,15 +87,17 @@ def addexercise(request, dailylog_id):
     if request.method == 'POST':
         form = ExerciseForm(request.POST)
         if form.is_valid():
+            dailyLog = DailyLog.objects.get(pk=dailylog_id)
             #Add the cadet to the database
-            newexercise = form.save(commit=False)
-            newexercise.dailylog = dailylog_id
+            newexercise = form.save()
+            newexercise.dailyLog = dailyLog
             newexercise.save()
             #Go back to cadet list
             return HttpResponseRedirect('/caloriecounter')
     else:
         form = ExerciseForm()
     return render(request, 'caloriecounter/loghasexercise/add.html', {'form': form})
+
 
 def signup(request):
     if request.method == 'POST':

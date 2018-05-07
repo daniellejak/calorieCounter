@@ -19,7 +19,7 @@ l
 <ul>
 
   
-  Date: {{ dailylog.date }}
+  Date: {% now 'DATE_FORMAT' %}
   
 
 </ul>
@@ -28,8 +28,7 @@ l
   {% if foodlog %}
       <b>Food Log</b>
       {% for food in foodlog %}
-          <li>Food: {{ food.foodName.foodName }}</li>
-          <li>Calories: {{ food.foodName.calories }}</li>
+          <li>Food: {{ food.foodName.foodName }} --- Calories: {{ food.foodName.calories }}</li>
           <!--<li>Carbs: {{ food.foodName.carbs }}</li>
           <li>Fat: {{ food.foodName.fat }}</li>
           <li>Protein: {{ food.foodName.protein }}</li>     -->     
@@ -38,9 +37,9 @@ l
  </ul>
  
  <ul> 
-    {% if exerciselog %}
+    {% if logexercises %}
     <b>Exercise Log</b>
-      {% for exercise in exerciselog %}
+      {% for exercise in logexercises %}
           <li>Exercise: {{ exercise.exerciseName.exerciseName }}</li>
       {% endfor %}
   {% endif %}
@@ -50,8 +49,8 @@ l
 No log entry
 {% endif %}
 
-<a href="food/add/{{dailylog.id}}">Log food to daily log</a>
-<a href="loghasexercise/add/{{dailylog.id}}">Add exercise to database</a>
+<a href="food/add/{{dailylog.id}}">Log food to daily log</a><br>
+<a href="loghasexercise/add/{{dailylog.id}}">Log exercise to daily log</a>
 
 <div class="stats-info agileits w3layouts">
 					<div class="col-md-3 col-sm-3 col-xs-6 agileits w3layouts stats-grid stats-grid-1">
