@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.template import loader
 from .models import Exercises
 from .models import DailyLog
@@ -7,6 +7,8 @@ from .models import LogHasExercise
 from .models import Food
 from django.http import HttpResponse
 from django.http import HttpResponseRedirect
+from django.contrib.auth import login, authenticate
+from django.contrib.auth.forms import UserCreationForm
 
 from .forms import FoodForm
 from .forms import ExerciseForm
@@ -73,7 +75,21 @@ def addexercise(request, dailylog_id):
             return HttpResponseRedirect('/caloriecounter')
     else:
         form = ExerciseForm()
-    return render(request, 'caloriecounter/exercise/add.html', {'form': form})
+    return render(request, 'caloriecounter/loghasexercise/add.html', {'form': form})
+
+def signup(request):
+    if request.method == 'POST':
+        form = UserCreationForm(request.POST)
+        if form.is_valid():
+            form.save()
+            username = form.cleaned_data.get('username')
+            raw_password = form.cleaned_data.get('password1')
+            user = authenticate(username=username, password=raw_password)
+            login(request, user)
+            return HttpResponseRedirect('/caloriecounter')
+    else:
+        form = UserCreationForm()
+    return render(request, 'caloriecounter/signup.html', {'form': form})
 
 '''
 def update(request, cadet_id):
