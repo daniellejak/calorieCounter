@@ -59,6 +59,21 @@ def addfood(request, dailylog_id):
     else:
         form = FoodForm()
     return render(request, 'caloriecounter/food/add.html', {'form': form})
+    
+def addexercise(request, dailylog_id):
+    if request.method == 'POST':
+        form = ExerciseForm(request.POST)
+        if form.is_valid():
+            #Add the cadet to the database
+            newexercise = form.save(commit=False)
+            newexercise.dailylog = dailylog_id
+            newexercise.save()
+            #Go back to cadet list
+            return HttpResponseRedirect('/caloriecounter')
+    else:
+        form = ExerciseForm()
+    return render(request, 'caloriecounter/exercise/add.html', {'form': form})
+
 '''
 def update(request, cadet_id):
     new_xnumber = request.POST['xnumber']

@@ -1,0 +1,15 @@
+<h2>Food List</h2>
+
+{% if food %} <!-- check if list is full or empty -->
+<ul>
+
+  {% for food in foods%}
+      <li><a href="./{{food.id}}">{{food.name}}</a> {{food.calories}}</li>
+  {% endfor %}
+
+</ul>
+{% else %}
+<p>No foods in database</p>
+{% endif %}
+
+<a href="add">Add foods to database</a>
