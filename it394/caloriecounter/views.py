@@ -28,7 +28,11 @@ def index(request):
 
     except:
         dailylog = DailyLog(date = currentDate)
-        dailylog.save()
+        if request.user.is_authenticated:
+            dailylog.user=request.user
+            dailylog.save()
+        else:
+            return HttpResponseRedirect('/accounts/login')
     #    LogHasFood.objects.all().delete()
     #    LogHasExercise.objects.all().delete()  
     full_log = DailyLog.objects.all()

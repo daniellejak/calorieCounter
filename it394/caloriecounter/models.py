@@ -5,6 +5,9 @@ from django.contrib.auth.models import User
 class Exercises(models.Model):
     exerciseName = models.CharField(max_length=75)
     caloriesPerMin = models.IntegerField()
+    
+    def __str__(self):
+        return (self.exerciseName)
 
 class Food(models.Model):
     foodName = models.CharField(max_length=75)
